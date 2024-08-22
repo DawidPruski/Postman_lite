@@ -1,26 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="./src/index.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EndpointTester</title>
-</head>
-
-<body>
-  <div class="panelSend">
-    <select class="methodSelect" id="method">
-        <option value="GET">GET</option>
-        <option value="POST">POST</option>
-        <option value="PUT">PUT</option>
-        <option value="DELETE">DELETE</option>
-        <option value="PATCH">PATCH</option>
-    </select>
-    <input class="inputUrl" type="text" name="inputUrl" id="inputUrl">
-    <button class="sendButton" type="sendButton" id="sendButton">Send</button>
-  </div>
-  <script src="src/App.tsx"></script>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/App.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EndpointTester</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
