@@ -11,7 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#panelSend {
+.sendPanel {
   display: flex;
   justify-content: center;
   align-items: center;
