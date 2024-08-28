@@ -90,3 +90,9 @@ button:focus-visible {
 .inputUrl:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+.HistoryLog {
+  padding: 4px;
+  background-color: #353535;
+  border-radius: 8px;
+}
