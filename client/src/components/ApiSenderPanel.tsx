@@ -1,19 +1,24 @@
 import { useState } from 'react';
+import axios from "axios";
 
 export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: string) => void }) {
     const [selectedColor, setSelectedColor] = useState('green');
+    const [method, setMethod] = useState('GET');
+    const [url, setUrl] = useState('https://httpbin.org/get');
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOption = event.target.options[event.target.selectedIndex];
         setSelectedColor(selectedOption.style.color);
+        setMethod(event.target.value);
     };
 
     const handleSendClick = () => {
-        const method = document.getElementById("methodSelect") as HTMLSelectElement;
-        const inputUrl = document.getElementById("inputUrl") as HTMLInputElement;
-        const result = `Method: ${method.value} URL: ${inputUrl.value}`;
-        
-        // Zamiast używać lokalnego stanu, bezpośrednio wywołujemy updateLogs
+        const result = `Method: ${method} URL: ${url}`;
+
+        axios.post('http://localhost:3000/api', { Method: method, URL: url })
+            .then(response => console.log(response.data))
+            .catch(error => console.error('Error:', error));
+
         updateLogs(result);
     };
 
@@ -22,6 +27,7 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
             <select
                 className="methodSelect"
                 id="methodSelect"
+                value={method}
                 onChange={handleSelectChange}
                 style={{ color: selectedColor }}
             >
@@ -31,8 +37,22 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                 <option value="DELETE" style={{ color: 'red' }}>DELETE</option>
                 <option value="PATCH" style={{ color: 'white' }}>PATCH</option>
             </select>
-            <input className="inputUrl" type="text" name="inputUrl" id="inputUrl" defaultValue="http://localhost:8000/" />
-            <button className="sendButton" type="submit" id="sendButton" onClick={handleSendClick}>Send</button>
+            <input
+                className="inputUrl"
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                name="inputUrl"
+                id="inputUrl"
+            />
+            <button
+                className="sendButton"
+                type="submit"
+                id="sendButton"
+                onClick={handleSendClick}
+            >
+                Send
+            </button>
         </div>
     );
 }
