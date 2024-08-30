@@ -1,5 +1,6 @@
 import express from "express";
 import cors from 'cors';
+import axios from "axios";
 
 const app = express();
 
@@ -12,37 +13,41 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 
-app.post("/api", (req: express.Request, res: express.Response) => {
+app.post("/api", async (req: express.Request, res: express.Response) => {
     const { Method, URL } = req.body; // Odczytaj dane z żądania
     console.log(`Received Method: ${Method}, URL: ${URL}`);
 
-    // Odpowiedź z backendu
-    res.json({ message: 'Data received successfully', method: Method, url: URL });
+    try {
+        let response;
+        switch (Method) {
+            case "GET":
+                response = await axios.get(URL);
+                break;
+            case "POST":
+                response = await axios.post(URL, req.body.data);
+                break;
+            case "PUT":
+                response = await axios.put(URL, req.body.data);
+                break;
+            case "DELETE":
+                response = await axios.delete(URL);
+                break;
+            case "PATCH":
+                response = await axios.patch(URL, req.body.data);
+                break;
+            default:
+                return res.status(400).json({ message: 'Invalid method' });
+        }
+        res.json(response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
 });
 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
-
-/* 
-WYSYŁAJĄC DELETE NA https://httpbin.org/post DOSTAJEMY RESPONSE 
-{message: 'Data received successfully', method: 'DELETE', url: 'https://httpbin.org/post'}
-message
-: 
-"Data received successfully"
-method
-: 
-"DELETE"
-url
-: 
-"https://httpbin.org/post"
-[[Prototype]]
-: 
-Object
-
-A POWINISMY DOSTAC:
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<title>405 Method Not Allowed</title>
-<h1>Method Not Allowed</h1>
-<p>The method is not allowed for the requested URL.</p>
-*/
