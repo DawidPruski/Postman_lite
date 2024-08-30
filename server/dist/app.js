@@ -61,25 +61,3 @@ app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
-/*
-WYSYŁAJĄC DELETE NA https://httpbin.org/post DOSTAJEMY RESPONSE
-{message: 'Data received successfully', method: 'DELETE', url: 'https://httpbin.org/post'}
-message
-:
-"Data received successfully"
-method
-:
-"DELETE"
-url
-:
-"https://httpbin.org/post"
-[[Prototype]]
-:
-Object
-
-A POWINISMY DOSTAC:
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<title>405 Method Not Allowed</title>
-<h1>Method Not Allowed</h1>
-<p>The method is not allowed for the requested URL.</p>
-*/ 
