@@ -13,13 +13,42 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
     };
 
     const handleSendClick = () => {
-        const result = `Method: ${method} URL: ${url}`;
-
+        const startTime = Date.now();
+    
         axios.post('http://localhost:3000/api', { Method: method, URL: url })
-            .then(response => console.log(response.data))
-            .catch(error => console.error('Error:', error));
-
-        updateLogs(result);
+            .then(response => {
+                const responseTime = Date.now() - startTime;
+    
+                const headers = JSON.stringify(response.headers, null, 2);
+                const config = JSON.stringify(response.config, null, 2);
+                const data = JSON.stringify(response.data, null, 2);
+    
+                const result = `Method: ${method} URL: ${url}
+                    \nStatus: ${response.status} \nStatusText: ${response.statusText}
+                    \nResponse Time: ${responseTime}ms
+                    \nHeaders:\n${headers}
+                    \nConfig:\n${config}
+                    \nData:\n${data}`;
+    
+                updateLogs(result);
+            })
+            .catch(error => {
+                const responseTime = Date.now() - startTime;
+    
+                const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
+                const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
+                const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
+    
+                const result = `Method: ${method} URL: ${url}
+                    \nStatus: ${error.response ? error.response.status : 'N/A'} 
+                    \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
+                    \nResponse Time: ${responseTime}ms
+                    \nHeaders:\n${headers}
+                    \nConfig:\n${config}
+                    \nData:\n${data}`;
+    
+                updateLogs(result);
+            });
     };
 
     return (

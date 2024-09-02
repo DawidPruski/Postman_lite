@@ -6,7 +6,7 @@ function App() {
     const [logs, setLogs] = useState<string[]>([]);
 
     const handleUpdateLogs = (newLog: string) => {
-        setLogs(prevLogs => [...prevLogs, newLog]);
+        setLogs(prevLogs => [newLog, ...prevLogs]);
     };
 
     return (
@@ -15,7 +15,9 @@ function App() {
             <div className='HistoryLog'>
                 <ul id='logConsole'>
                     {logs.map((log, index) => (
-                        <li key={index}>{log}</li>
+                        <li key={index}>
+                            <pre>{log}</pre>
+                        </li>
                     ))}
                 </ul>
             </div>
