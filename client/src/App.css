@@ -91,6 +91,16 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.checkboxContainer {
+  padding: 10px;
+}
+
+.checkboxJSON,
+.checkboxXML {
+  margin-right: 10px; 
+  margin-left: 10px;
+}
+
 .HistoryLog {
   padding: 4px;
   background-color: #353535;
