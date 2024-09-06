@@ -95,6 +95,25 @@ button:focus-visible {
   padding: 10px;
 }
 
+.checkboxContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.bodyContainer {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.bodyContainerInput {
+  width: 500px;
+  height: 500px;
+}
+
+
 .checkboxJSON,
 .checkboxXML {
   margin-right: 10px; 

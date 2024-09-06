@@ -82,15 +82,6 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
             >
                 Send
             </button>
-            <div className='checkboxContainer'>
-                <label htmlFor="JSON">JSON</label>
-                <input className='checkboxJSON' type="checkbox" name="JSON" id="JSON" />
-                <label htmlFor="XML">XML</label>
-                <input className='checkboxXML' type="checkbox" name="XML" id="XML" />
-            </div>
-            <div className='bodyContainer'>
-                <input type="text" name="Body" id="Body" />
-            </div>
         </div>
     );
 }
