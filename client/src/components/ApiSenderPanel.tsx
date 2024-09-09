@@ -5,6 +5,19 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
     const [selectedColor, setSelectedColor] = useState('green');
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('https://httpbin.org/get');
+    const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
+    const [bodyContent, setBodyContent] = useState('');
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedFormat(event.target.value);
+    };
+
+    const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newValue = event.target.value;
+        setBodyContent(newValue);
+        console.log(newValue); //Used for Debuging
+    }
+
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -52,36 +65,69 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
     };
 
     return (
-        <div className='sendPanel'>
-            <select
-                className="methodSelect"
-                id="methodSelect"
-                value={method}
-                onChange={handleSelectChange}
-                style={{ color: selectedColor }}
-            >
-                <option value="GET" style={{ color: 'green' }}>GET</option>
-                <option value="POST" style={{ color: 'yellow' }}>POST</option>
-                <option value="PUT" style={{ color: 'cyan' }}>PUT</option>
-                <option value="DELETE" style={{ color: 'red' }}>DELETE</option>
-                <option value="PATCH" style={{ color: 'white' }}>PATCH</option>
-            </select>
-            <input
-                className="inputUrl"
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                name="inputUrl"
-                id="inputUrl"
-            />
-            <button
-                className="sendButton"
-                type="submit"
-                id="sendButton"
-                onClick={handleSendClick}
-            >
-                Send
-            </button>
-        </div>
+        <>
+            <div className='sendPanel'>
+                <select
+                    className="methodSelect"
+                    id="methodSelect"
+                    value={method}
+                    onChange={handleSelectChange}
+                    style={{ color: selectedColor }}
+                >
+                    <option value="GET" style={{ color: 'green' }}>GET</option>
+                    <option value="POST" style={{ color: 'yellow' }}>POST</option>
+                    <option value="PUT" style={{ color: 'cyan' }}>PUT</option>
+                    <option value="DELETE" style={{ color: 'red' }}>DELETE</option>
+                    <option value="PATCH" style={{ color: 'white' }}>PATCH</option>
+                </select>
+                <input
+                    className="inputUrl"
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    name="inputUrl"
+                    id="inputUrl"
+                />
+                <button
+                    className="sendButton"
+                    type="submit"
+                    id="sendButton"
+                    onClick={handleSendClick}
+                >
+                    Send
+                </button>
+            </div>
+            <div className='checkboxContainer'>
+                <label htmlFor="JSON">JSON</label>
+                <input
+                    className='radioJSON'
+                    type="radio"
+                    name="format"
+                    id="JSON"
+                    value="JSON"
+                    checked={selectedFormat === 'JSON'}
+                    onChange={handleRadioChange}
+                />
+                <label htmlFor="XML">XML</label>
+                <input
+                    className='radioXML'
+                    type="radio"
+                    name="format"
+                    id="XML"
+                    value="XML"
+                    checked={selectedFormat === 'XML'}
+                    onChange={handleRadioChange}
+                />
+            </div>
+            <div className='bodyContainer'>
+                <textarea
+                    value={bodyContent}
+                    placeholder='Body goes here...'
+                    onChange={handleBodyChange}
+                    maxLength={1000}
+                    minLength={1000}
+                />
+            </div>
+        </>
     );
 }

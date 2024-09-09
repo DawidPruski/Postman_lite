@@ -1,6 +1,6 @@
 import './App.css';
 import ApiSenderPanel from './components/ApiSenderPanel';
-import Body from './components/Body';
+// import Body from './components/Body';
 import { useState } from 'react';
 
 function App() {
@@ -13,7 +13,6 @@ function App() {
     return (
         <>
             <ApiSenderPanel updateLogs={handleUpdateLogs} />
-            <Body/>
             <div className='HistoryLog'>
                 <ul id='logConsole'>
                     {logs.map((log, index) => (
