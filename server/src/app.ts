@@ -15,7 +15,7 @@ app.use(cors({
 
 app.post("/api", async (req: express.Request, res: express.Response) => {
     const { Method, URL } = req.body; // Odczytaj dane z żądania
-    console.log(`Received Method: ${Method}, URL: ${URL}`);
+    // console.log(`Received Method: ${Method}, URL: ${URL}`);
 
     try {
         let response;
