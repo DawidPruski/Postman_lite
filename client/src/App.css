@@ -15,7 +15,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40vh;
 } 
 
 button {
@@ -106,6 +105,11 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   padding: 10px;
+}
+
+.bodyTextArea {
+  width: 500px;
+  height: 250px;
 }
 
 .checkboxJSON,

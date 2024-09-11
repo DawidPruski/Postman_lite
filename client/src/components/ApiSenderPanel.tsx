@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import axios from "axios";
 
-export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: string) => void }) {
+export default function ApiSenderPanel() {
     const [selectedColor, setSelectedColor] = useState('green');
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('https://httpbin.org/get');
     const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
     const [bodyContent, setBodyContent] = useState('');
+    const [result, setResult] = useState<string>('');
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedFormat(event.target.value);
@@ -34,23 +35,22 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                     const responseTime = Date.now() - startTime;
 
                     const headers = JSON.stringify(response.headers, null, 2);
-                    const config = JSON.stringify(response.config, null, 2);
+                    // const config = JSON.stringify(response.config, null, 2);
                     const data = JSON.stringify(response.data, null, 2);
 
                     const result = `Method: ${method} URL: ${url}
                     \nStatus: ${response.status} \nStatusText: ${response.statusText}
                     \nResponse Time: ${responseTime}ms
                     \nHeaders:\n${headers}
-                    \nConfig:\n${config}
                     \nData:\n${data}`;
 
-                    updateLogs(result);
+                    setResult(result);
                 })
                 .catch(error => {
                     const responseTime = Date.now() - startTime;
 
                     const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
-                    const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
+                    // const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
                     const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
 
                     const result = `Method: ${method} URL: ${url}
@@ -58,10 +58,9 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                     \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
                     \nResponse Time: ${responseTime}ms
                     \nHeaders:\n${headers}
-                    \nConfig:\n${config}
                     \nData:\n${data}`;
 
-                    updateLogs(result);
+                    setResult(result);
                 });
         } else {
             axios.post('http://localhost:3000/api', { Method: method, URL: url })
@@ -69,23 +68,22 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                     const responseTime = Date.now() - startTime;
 
                     const headers = JSON.stringify(response.headers, null, 2);
-                    const config = JSON.stringify(response.config, null, 2);
+                    // const config = JSON.stringify(response.config, null, 2);
                     const data = JSON.stringify(response.data, null, 2);
 
                     const result = `Method: ${method} URL: ${url}
                     \nStatus: ${response.status} \nStatusText: ${response.statusText}
                     \nResponse Time: ${responseTime}ms
                     \nHeaders:\n${headers}
-                    \nConfig:\n${config}
                     \nData:\n${data}`;
 
-                    updateLogs(result);
+                    setResult(result);
                 })
                 .catch(error => {
                     const responseTime = Date.now() - startTime;
 
                     const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
-                    const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
+                    // const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
                     const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
 
                     const result = `Method: ${method} URL: ${url}
@@ -93,10 +91,9 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                     \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
                     \nResponse Time: ${responseTime}ms
                     \nHeaders:\n${headers}
-                    \nConfig:\n${config}
                     \nData:\n${data}`;
 
-                    updateLogs(result);
+                    setResult(result);
                 });
         }
     };
@@ -157,13 +154,20 @@ export default function ApiSenderPanel({ updateLogs }: { updateLogs: (log: strin
                 />
             </div>
             <div className='bodyContainer'>
-                <textarea
+                <textarea className='bodyTextArea'
                     value={bodyContent}
                     placeholder='Body goes here...'
                     onChange={handleBodyChange}
                     maxLength={1000}
                     minLength={1000}
                 />
+            </div>
+            <div className='HistoryLog'>
+                <ul id='logConsole'>
+                    <pre>
+                        {result}
+                    </pre>
+                </ul>
             </div>
         </>
     );
