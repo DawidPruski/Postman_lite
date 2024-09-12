@@ -16,7 +16,7 @@ export default function ApiSenderPanel() {
     const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = event.target.value;
         setBodyContent(newValue);
-        console.log(newValue); //Used for Debuging
+        console.log(newValue);
     }
 
 
