@@ -8,6 +8,7 @@ export default function ApiSenderPanel() {
     const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
     const [bodyContent, setBodyContent] = useState('');
     const [result, setResult] = useState<string>('');
+    const [backgroundColor, setBackgroundColor] = useState('');
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedFormat(event.target.value);
@@ -29,6 +30,23 @@ export default function ApiSenderPanel() {
     const handleSendClick = () => {
         const startTime = Date.now();
 
+        const statusCode = (result: string) => {
+            const match = result.match(/Status: (\d+)/);
+            const statusCode: string = match ? match[1] : '';
+            console.log(statusCode);
+
+            switch (statusCode) {
+                case "200":
+                    setBackgroundColor('rgba(0, 255, 0, 0.2)');
+                    setResult(result);
+                    break;
+                default:
+                    setBackgroundColor("rgba(255, 0, 0, 0.4)");
+                    setResult(result);
+                    break;
+            }
+        }
+
         if (bodyContent !== null) {
             axios.post('http://localhost:3000/api', { Method: method, URL: url, BodyContent: bodyContent })
                 .then(response => {
@@ -44,7 +62,7 @@ export default function ApiSenderPanel() {
                     \nHeaders:\n${headers}
                     \nData:\n${data}`;
 
-                    setResult(result);
+                    statusCode(result);
                 })
                 .catch(error => {
                     const responseTime = Date.now() - startTime;
@@ -60,7 +78,7 @@ export default function ApiSenderPanel() {
                     \nHeaders:\n${headers}
                     \nData:\n${data}`;
 
-                    setResult(result);
+                    statusCode(result);
                 });
         } else {
             axios.post('http://localhost:3000/api', { Method: method, URL: url })
@@ -77,7 +95,7 @@ export default function ApiSenderPanel() {
                     \nHeaders:\n${headers}
                     \nData:\n${data}`;
 
-                    setResult(result);
+                    statusCode(result);
                 })
                 .catch(error => {
                     const responseTime = Date.now() - startTime;
@@ -93,7 +111,7 @@ export default function ApiSenderPanel() {
                     \nHeaders:\n${headers}
                     \nData:\n${data}`;
 
-                    setResult(result);
+                    statusCode(result);
                 });
         }
     };
@@ -164,7 +182,11 @@ export default function ApiSenderPanel() {
             </div>
             <div className='HistoryLog'>
                 <ul id='logConsole'>
-                    <pre>
+                    <pre style={{
+                        backgroundColor: backgroundColor,
+                        borderRadius: 8,
+                        padding: 4
+                    }}>
                         {result}
                     </pre>
                 </ul>
