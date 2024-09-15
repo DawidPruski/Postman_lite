@@ -24,8 +24,10 @@ app.use((0, cors_1.default)({
     allowedHeaders: ['Content-Type']
 }));
 app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { Method, URL } = req.body; // Odczytaj dane z żądania
-    console.log(`Received Method: ${Method}, URL: ${URL}`);
+    const { Method, URL, BodyContent } = req.body;
+    if (!Method || !URL) {
+        return res.status(400).json({ message: 'Method and URL are required' });
+    }
     try {
         let response;
         switch (Method) {
@@ -33,16 +35,25 @@ app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 response = yield axios_1.default.get(URL);
                 break;
             case "POST":
-                response = yield axios_1.default.post(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for POST requests' });
+                }
+                response = yield axios_1.default.post(URL, BodyContent);
                 break;
             case "PUT":
-                response = yield axios_1.default.put(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for PUT requests' });
+                }
+                response = yield axios_1.default.put(URL, BodyContent);
                 break;
             case "DELETE":
                 response = yield axios_1.default.delete(URL);
                 break;
             case "PATCH":
-                response = yield axios_1.default.patch(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for PATCH requests' });
+                }
+                response = yield axios_1.default.patch(URL, BodyContent);
                 break;
             default:
                 return res.status(400).json({ message: 'Invalid method' });

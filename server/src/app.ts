@@ -14,30 +14,44 @@ app.use(cors({
 }));
 
 app.post("/api", async (req: express.Request, res: express.Response) => {
-    const { Method, URL } = req.body; // Odczytaj dane z żądania
-    // console.log(`Received Method: ${Method}, URL: ${URL}`);
+    const { Method, URL, BodyContent } = req.body;
+
+    if (!Method || !URL) {
+        return res.status(400).json({ message: 'Method and URL are required' });
+    }
 
     try {
         let response;
+
         switch (Method) {
             case "GET":
                 response = await axios.get(URL);
                 break;
             case "POST":
-                response = await axios.post(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for POST requests' });
+                }
+                response = await axios.post(URL, BodyContent);
                 break;
             case "PUT":
-                response = await axios.put(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for PUT requests' });
+                }
+                response = await axios.put(URL, BodyContent);
                 break;
             case "DELETE":
                 response = await axios.delete(URL);
                 break;
             case "PATCH":
-                response = await axios.patch(URL, req.body.data);
+                if (!BodyContent) {
+                    return res.status(400).json({ message: 'BodyContent is required for PATCH requests' });
+                }
+                response = await axios.patch(URL, BodyContent);
                 break;
             default:
                 return res.status(400).json({ message: 'Invalid method' });
         }
+
         res.json(response.data);
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

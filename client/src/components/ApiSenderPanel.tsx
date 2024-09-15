@@ -1,23 +1,23 @@
 import { useState } from 'react';
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 export default function ApiSenderPanel() {
     const [selectedColor, setSelectedColor] = useState('green');
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('https://httpbin.org/get');
-    const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
+    // const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
     const [bodyContent, setBodyContent] = useState('');
     const [result, setResult] = useState<string>('');
     const [backgroundColor, setBackgroundColor] = useState('');
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedFormat(event.target.value);
-    };
+    // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setSelectedFormat(event.target.value);
+    // };
 
     const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = event.target.value;
         setBodyContent(newValue);
-        console.log(newValue);
+        // console.log(newValue);
     }
 
 
@@ -27,8 +27,52 @@ export default function ApiSenderPanel() {
         setMethod(event.target.value);
     };
 
+    function handleResponseAxios(response: AxiosResponse, startTime: number) {
+        const responseTime = Date.now() - startTime;
+
+        const headers = JSON.stringify(response.headers, null, 2);
+        const config = JSON.stringify(response.config, null, 2);
+        const data = JSON.stringify(response.data, null, 2);
+
+        return `Method: ${method} URL: ${url}
+        \nStatus: ${response.status} \nStatusText: ${response.statusText}
+        \nResponse Time: ${responseTime}ms
+        \nHeaders:\n${headers}
+        \nData:\n${data}
+        \nConfig: \n${config}`;
+    };
+
+    function handleErrorAxios(error: AxiosError, startTime: number) {
+        const responseTime = Date.now() - startTime;
+
+        const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
+        const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
+        const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
+
+        return `Method: ${method} URL: ${url}
+        \nStatus: ${error.response ? error.response.status : 'N/A'} 
+        \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
+        \nResponse Time: ${responseTime}ms
+        \nHeaders:\n${headers}
+        \nData:\n${data}
+        \nConfig: \n${config}`;
+    };
+
     const handleSendClick = () => {
         const startTime = Date.now();
+        let bodyJSON = {};  // Domyślnie pusty obiekt
+
+        if (bodyContent.trim()) {  // Sprawdza, czy bodyContent nie jest pustym stringiem
+            try {
+                // Próbuj parsować bodyContent na JSON tylko wtedy, gdy nie jest pusty
+                bodyJSON = JSON.parse(bodyContent);
+            } catch (error) {
+                console.error("Invalid JSON format in body content:", error);
+                setResult("Invalid JSON format.");
+                setBackgroundColor("rgba(255, 0, 0, 0.4)");
+                return; // Zakończ funkcję, jeśli JSON jest niepoprawny
+            }
+        }
 
         const statusCode = (result: string) => {
             const match = result.match(/Status: (\d+)/);
@@ -47,73 +91,15 @@ export default function ApiSenderPanel() {
             }
         }
 
-        if (bodyContent !== null) {
-            axios.post('http://localhost:3000/api', { Method: method, URL: url, BodyContent: bodyContent })
-                .then(response => {
-                    const responseTime = Date.now() - startTime;
-
-                    const headers = JSON.stringify(response.headers, null, 2);
-                    // const config = JSON.stringify(response.config, null, 2);
-                    const data = JSON.stringify(response.data, null, 2);
-
-                    const result = `Method: ${method} URL: ${url}
-                    \nStatus: ${response.status} \nStatusText: ${response.statusText}
-                    \nResponse Time: ${responseTime}ms
-                    \nHeaders:\n${headers}
-                    \nData:\n${data}`;
-
-                    statusCode(result);
-                })
-                .catch(error => {
-                    const responseTime = Date.now() - startTime;
-
-                    const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
-                    // const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
-                    const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
-
-                    const result = `Method: ${method} URL: ${url}
-                    \nStatus: ${error.response ? error.response.status : 'N/A'} 
-                    \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
-                    \nResponse Time: ${responseTime}ms
-                    \nHeaders:\n${headers}
-                    \nData:\n${data}`;
-
-                    statusCode(result);
-                });
-        } else {
-            axios.post('http://localhost:3000/api', { Method: method, URL: url })
-                .then(response => {
-                    const responseTime = Date.now() - startTime;
-
-                    const headers = JSON.stringify(response.headers, null, 2);
-                    // const config = JSON.stringify(response.config, null, 2);
-                    const data = JSON.stringify(response.data, null, 2);
-
-                    const result = `Method: ${method} URL: ${url}
-                    \nStatus: ${response.status} \nStatusText: ${response.statusText}
-                    \nResponse Time: ${responseTime}ms
-                    \nHeaders:\n${headers}
-                    \nData:\n${data}`;
-
-                    statusCode(result);
-                })
-                .catch(error => {
-                    const responseTime = Date.now() - startTime;
-
-                    const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
-                    // const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
-                    const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
-
-                    const result = `Method: ${method} URL: ${url}
-                    \nStatus: ${error.response ? error.response.status : 'N/A'} 
-                    \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
-                    \nResponse Time: ${responseTime}ms
-                    \nHeaders:\n${headers}
-                    \nData:\n${data}`;
-
-                    statusCode(result);
-                });
-        }
+        axios.post('http://localhost:3000/api', { Method: method, URL: url, BodyContent: bodyJSON })
+            .then(response => {
+                const result = handleResponseAxios(response, startTime);
+                statusCode(result)
+            })
+            .catch(error => {
+                const result = handleErrorAxios(error, startTime);
+                statusCode(result);
+            });
     };
 
     return (
@@ -149,7 +135,7 @@ export default function ApiSenderPanel() {
                     Send
                 </button>
             </div>
-            <div className='checkboxContainer'>
+            {/* <div className='checkboxContainer'>
                 <label htmlFor="JSON">JSON</label>
                 <input
                     className='radioJSON'
@@ -170,7 +156,7 @@ export default function ApiSenderPanel() {
                     checked={selectedFormat === 'XML'}
                     onChange={handleRadioChange}
                 />
-            </div>
+            </div> */}
             <div className='bodyContainer'>
                 <textarea className='bodyTextArea'
                     value={bodyContent}
