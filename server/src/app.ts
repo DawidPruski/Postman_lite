@@ -62,6 +62,13 @@ app.post("/api", async (req: express.Request, res: express.Response) => {
     }
 });
 
+//For testing
+
+// app.post("/test", async (req: express.Request, res: express.Response) => {
+//     const { firstname } = req.body;
+//     res.json({ message: `Hello, ${firstname}` });
+// });
+
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
