@@ -171,7 +171,10 @@ export default function ApiSenderPanel() {
                     <pre style={{
                         backgroundColor: backgroundColor,
                         borderRadius: 8,
-                        padding: 4
+                        padding: 4,
+                        margin: 0,
+                        height: 'auto',
+                        width: 'auto'
                     }}>
                         {result}
                     </pre>
