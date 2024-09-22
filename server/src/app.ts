@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://endpoint-tester-web-tool.vercel.app/', //If u want deploy it localy change to http://localhost:5173
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
@@ -69,6 +69,7 @@ app.post("/api", async (req: express.Request, res: express.Response) => {
 //     res.json({ message: `Hello, ${firstname}` });
 // });
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
