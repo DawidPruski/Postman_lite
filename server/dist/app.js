@@ -18,20 +18,25 @@ const axios_1 = __importDefault(require("axios"));
 const app = (0, express_1.default)();
 // Middleware to parse JSON
 app.use(express_1.default.json());
-const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
-// Use the CORS middleware
+const allowedOrigins = [
+    'https://endpoint-tester-web-tool.vercel.app',
+    'http://localhost:5173'
+];
 app.use((0, cors_1.default)({
-    origin: allowedOrigins, // Define allowed origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true, // Allow credentials (if needed)
-}));
-// Explicitly handle preflight requests
-app.options('*', (0, cors_1.default)({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like curl or mobile apps)
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        else {
+            return callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+    credentials: true
 }));
 app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { Method, URL, BodyContent } = req.body;

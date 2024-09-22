@@ -7,23 +7,26 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 
-const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
-
-// Use the CORS middleware
-app.use(cors({
-    origin: allowedOrigins, // Define allowed origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true, // Allow credentials (if needed)
-}));
-
-// Explicitly handle preflight requests
-app.options('*', cors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+const allowedOrigins = [
+    'https://endpoint-tester-web-tool.vercel.app', 
+    'http://localhost:5173'
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like curl or mobile apps)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-}));
+    credentials: true
+  }));
 
 
 app.post("/api", async (req: express.Request, res: express.Response) => {
