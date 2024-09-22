@@ -7,15 +7,13 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 
-// const allowedOrigins = [
-//     'https://endpoint-tester-web-tool.vercel.app', 
-//     'http://localhost:5173'
-//   ];
-  
-  app.use(cors({
-    origin: 'https://endpoint-tester-web-tool.vercel.app', // Allow requests from your client URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type']
+const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }));
 
 app.options('*', cors());

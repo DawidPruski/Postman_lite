@@ -18,14 +18,12 @@ const axios_1 = __importDefault(require("axios"));
 const app = (0, express_1.default)();
 // Middleware to parse JSON
 app.use(express_1.default.json());
-// const allowedOrigins = [
-//     'https://endpoint-tester-web-tool.vercel.app', 
-//     'http://localhost:5173'
-//   ];
+const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
 app.use((0, cors_1.default)({
-    origin: 'https://endpoint-tester-web-tool.vercel.app', // Allow requests from your client URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type']
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }));
 app.options('*', (0, cors_1.default)());
 app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
