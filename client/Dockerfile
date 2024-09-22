@@ -12,6 +12,10 @@ COPY . .
 
 # RUN npm run build
 
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN chmod +x /app/node_modules/.bin/vite
+
 EXPOSE 5173
 
 CMD [ "npm", "run", "dev" ]
