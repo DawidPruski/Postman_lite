@@ -19,7 +19,7 @@ const app = (0, express_1.default)();
 // Middleware do parsowania JSON
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:5173',
+    origin: 'https://endpoint-tester-web-tool.vercel.app/', //If u want deploy it localy change to http://localhost:5173
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
@@ -74,6 +74,7 @@ app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 //     const { firstname } = req.body;
 //     res.json({ message: `Hello, ${firstname}` });
 // });
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });

@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://endpoint-tester-web-tool.vercel.app/', //If u want deploy it localy change to http://localhost:5173
+    origin: 'https://endpoint-tester-web-tool.vercel.app', //If u want deploy it localy change to http://localhost:5173
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
