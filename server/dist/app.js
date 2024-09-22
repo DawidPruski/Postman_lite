@@ -61,7 +61,7 @@ app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             default:
                 return res.status(400).json({ message: 'Invalid method' });
         }
-        res.json(response.data);
+        res.status(200).json(response.data);
     }
     catch (error) {
         if (axios_1.default.isAxiosError(error) && error.response) {

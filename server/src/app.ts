@@ -58,7 +58,7 @@ app.post("/api", async (req: express.Request, res: express.Response) => {
                 return res.status(400).json({ message: 'Invalid method' });
         }
 
-        res.json(response.data);
+        res.status(200).json(response.data);
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             res.status(error.response.status).json(error.response.data);
