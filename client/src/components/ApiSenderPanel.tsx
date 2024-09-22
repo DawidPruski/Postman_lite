@@ -91,7 +91,14 @@ export default function ApiSenderPanel() {
             }
         }
 
-        axios.post('https://endpoint-tester-web-tool-server.vercel.app/api', { Method: method, URL: url, BodyContent: bodyJSON }) //If u want deploy it localy change to http://localhost:3000
+        const apiBaseUrl = process.env.NODE_ENV === 'production'
+        ? 'https://endpoint-tester-web-tool-server.vercel.app'
+        : 'http://localhost:3000';
+
+        axios.post(`${apiBaseUrl}/api`, { 
+            Method: method, 
+            URL: url, 
+            BodyContent: bodyJSON }) //If u want deploy it localy change to http://localhost:3000
             .then(response => {
                 const result = handleResponseAxios(response, startTime);
                 statusCode(result)

@@ -7,8 +7,12 @@ const app = express();
 // Middleware do parsowania JSON
 app.use(express.json());
 
+const allowedOrigin = process.env.NODE_ENV === 'production'
+    ? 'https://endpoint-tester-web-tool.vercel.app'
+    : 'http://localhost:5173';
+
 app.use(cors({
-    origin: 'https://endpoint-tester-web-tool.vercel.app', //If u want deploy it localy change to http://localhost:5173
+    origin: allowedOrigin,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
