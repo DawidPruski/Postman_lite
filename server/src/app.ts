@@ -17,6 +17,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 
+app.options('*', cors());
+
 app.post("/api", async (req: express.Request, res: express.Response) => {
     const { Method, URL, BodyContent } = req.body;
 

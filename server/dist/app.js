@@ -26,6 +26,7 @@ app.use((0, cors_1.default)({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
+app.options('*', (0, cors_1.default)());
 app.post("/api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { Method, URL, BodyContent } = req.body;
     if (!Method || !URL) {

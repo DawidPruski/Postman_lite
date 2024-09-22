@@ -98,7 +98,7 @@ export default function ApiSenderPanel() {
         axios.post(`${apiBaseUrl}/api`, { 
             Method: method, 
             URL: url, 
-            BodyContent: bodyJSON }) //If u want deploy it localy change to http://localhost:3000
+            BodyContent: bodyJSON })
             .then(response => {
                 const result = handleResponseAxios(response, startTime);
                 statusCode(result)
