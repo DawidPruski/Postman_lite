@@ -18,8 +18,11 @@ const axios_1 = __importDefault(require("axios"));
 const app = (0, express_1.default)();
 // Middleware do parsowania JSON
 app.use(express_1.default.json());
+const allowedOrigin = process.env.NODE_ENV === 'production'
+    ? 'https://endpoint-tester-web-tool.vercel.app'
+    : 'http://localhost:5173';
 app.use((0, cors_1.default)({
-    origin: 'https://endpoint-tester-web-tool.vercel.app/', //If u want deploy it localy change to http://localhost:5173
+    origin: allowedOrigin,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
 }));
