@@ -18,7 +18,6 @@ app.use(cors({
 
 app.options('*', cors());
 
-
 app.post("/api", async (req: express.Request, res: express.Response) => {
     const { Method, URL, BodyContent } = req.body;
 
@@ -58,13 +57,9 @@ app.post("/api", async (req: express.Request, res: express.Response) => {
                 return res.status(400).json({ message: 'Invalid method' });
         }
 
-        res.status(200).json(response.data);
+        res.json(response.data);
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            res.status(error.response.status).json(error.response.data);
-        } else {
-            res.status(500).json({ message: 'Internal Server Error' });
-        }
+        res.status(500).json({ message: 'Error making request', error });
     }
 });
 
