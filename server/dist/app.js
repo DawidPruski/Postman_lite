@@ -16,12 +16,10 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const axios_1 = __importDefault(require("axios"));
 const app = (0, express_1.default)();
-// Middleware do parsowania JSON
 app.use(express_1.default.json());
 const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin)
             return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -32,7 +30,7 @@ app.use((0, cors_1.default)({
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 app.options('*', (0, cors_1.default)());

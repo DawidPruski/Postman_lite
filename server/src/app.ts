@@ -4,14 +4,12 @@ import axios from "axios";
 
 const app = express();
 
-// Middleware do parsowania JSON
 app.use(express.json());
 
 const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -21,8 +19,8 @@ app.use(cors({
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true 
 }));
 
 app.options('*', cors());
