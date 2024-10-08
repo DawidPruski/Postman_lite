@@ -5,19 +5,13 @@ export default function ApiSenderPanel() {
     const [selectedColor, setSelectedColor] = useState('green');
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('https://httpbin.org/get');
-    // const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
     const [bodyContent, setBodyContent] = useState('');
     const [result, setResult] = useState<string>('');
     const [backgroundColor, setBackgroundColor] = useState('');
 
-    // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setSelectedFormat(event.target.value);
-    // };
-
     const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = event.target.value;
         setBodyContent(newValue);
-        // console.log(newValue);
     }
 
 
@@ -92,13 +86,14 @@ export default function ApiSenderPanel() {
         }
 
         const apiBaseUrl = process.env.NODE_ENV === 'production'
-        ? 'https://endpoint-tester-web-tool-server.vercel.app'
-        : 'http://localhost:3000';
+            ? 'https://endpoint-tester-web-tool-server.vercel.app'
+            : 'http://localhost:3000';
 
-        axios.post(`${apiBaseUrl}/api`, { 
-            Method: method, 
-            URL: url, 
-            BodyContent: bodyJSON })
+        axios.post(`${apiBaseUrl}/api`, {
+            Method: method,
+            URL: url,
+            BodyContent: bodyJSON
+        })
             .then(response => {
                 const result = handleResponseAxios(response, startTime);
                 statusCode(result)
@@ -111,7 +106,23 @@ export default function ApiSenderPanel() {
 
     return (
         <>
-            <div className='sendPanel'>
+            <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet"></link>
+            <h1
+                style={{
+                    textAlign: 'center',
+                    fontSize: '70px',
+                    fontFamily: 'Rubik Bubbles'
+                }}>
+                EndpointTester
+            </h1>
+            <div className='sendPanel'
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: '50px',
+                    margin: '20px'
+                }}>
                 <select
                     className="methodSelect"
                     id="methodSelect"
@@ -141,30 +152,11 @@ export default function ApiSenderPanel() {
                 >
                     Send
                 </button>
-            </div>
-            {/* <div className='checkboxContainer'>
-                <label htmlFor="JSON">JSON</label>
-                <input
-                    className='radioJSON'
-                    type="radio"
-                    name="format"
-                    id="JSON"
-                    value="JSON"
-                    checked={selectedFormat === 'JSON'}
-                    onChange={handleRadioChange}
-                />
-                <label htmlFor="XML">XML</label>
-                <input
-                    className='radioXML'
-                    type="radio"
-                    name="format"
-                    id="XML"
-                    value="XML"
-                    checked={selectedFormat === 'XML'}
-                    onChange={handleRadioChange}
-                />
-            </div> */}
-            <div className='bodyContainer'>
+            </div >
+            < div className='bodyContainer' 
+            style={{
+                margin: 20
+            }}>
                 <textarea className='bodyTextArea'
                     value={bodyContent}
                     placeholder='Body goes here...'
@@ -172,7 +164,7 @@ export default function ApiSenderPanel() {
                     maxLength={1000}
                     minLength={1000}
                 />
-            </div>
+            </div >
             <div className='HistoryLog'>
                 <ul id='logConsole'>
                     <pre style={{

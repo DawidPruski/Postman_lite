@@ -11,12 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.sendPanel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
