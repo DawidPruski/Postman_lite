@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { handleErrorAxios, handleResponseAxios } from '../utils/apiHandlers'
+import axios from "axios";
 
 export default function ApiSenderPanel() {
     const [selectedColor, setSelectedColor] = useState('green');
@@ -19,37 +20,6 @@ export default function ApiSenderPanel() {
         const selectedOption = event.target.options[event.target.selectedIndex];
         setSelectedColor(selectedOption.style.color);
         setMethod(event.target.value);
-    };
-
-    function handleResponseAxios(response: AxiosResponse, startTime: number) {
-        const responseTime = Date.now() - startTime;
-
-        const headers = JSON.stringify(response.headers, null, 2);
-        const config = JSON.stringify(response.config, null, 2);
-        const data = JSON.stringify(response.data, null, 2);
-
-        return `Method: ${method} URL: ${url}
-        \nStatus: ${response.status} \nStatusText: ${response.statusText}
-        \nResponse Time: ${responseTime}ms
-        \nHeaders:\n${headers}
-        \nData:\n${data}
-        \nConfig: \n${config}`;
-    };
-
-    function handleErrorAxios(error: AxiosError, startTime: number) {
-        const responseTime = Date.now() - startTime;
-
-        const headers = error.response ? JSON.stringify(error.response.headers, null, 2) : 'N/A';
-        const config = error.response ? JSON.stringify(error.response.config, null, 2) : 'N/A';
-        const data = error.response ? JSON.stringify(error.response.data, null, 2) : 'N/A';
-
-        return `Method: ${method} URL: ${url}
-        \nStatus: ${error.response ? error.response.status : 'N/A'} 
-        \nStatusText: ${error.response ? error.response.statusText : 'N/A'}
-        \nResponse Time: ${responseTime}ms
-        \nHeaders:\n${headers}
-        \nData:\n${data}
-        \nConfig: \n${config}`;
     };
 
     const handleSendClick = () => {
@@ -95,11 +65,11 @@ export default function ApiSenderPanel() {
             BodyContent: bodyJSON
         })
             .then(response => {
-                const result = handleResponseAxios(response, startTime);
+                const result = handleResponseAxios(response, startTime, method, url);
                 statusCode(result)
             })
             .catch(error => {
-                const result = handleErrorAxios(error, startTime);
+                const result = handleErrorAxios(error, startTime, method, url);
                 statusCode(result);
             });
     };
@@ -153,10 +123,10 @@ export default function ApiSenderPanel() {
                     Send
                 </button>
             </div >
-            < div className='bodyContainer' 
-            style={{
-                margin: 20
-            }}>
+            < div className='bodyContainer'
+                style={{
+                    margin: 20
+                }}>
                 <textarea className='bodyTextArea'
                     value={bodyContent}
                     placeholder='Body goes here...'
