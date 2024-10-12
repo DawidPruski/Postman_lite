@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { handleErrorAxios, handleResponseAxios } from '../utils/apiHandlers'
-import axios from "axios";
+import { apiSender } from '../utils/apiHandlers'
 
 export default function ApiSenderPanel() {
     const [selectedColor, setSelectedColor] = useState('green');
@@ -22,56 +21,10 @@ export default function ApiSenderPanel() {
         setMethod(event.target.value);
     };
 
-    const handleSendClick = () => {
-        const startTime = Date.now();
-        let bodyJSON = {};  // Domyślnie pusty obiekt
+    const handleSendClick = async () => {
 
-        if (bodyContent.trim()) {  // Sprawdza, czy bodyContent nie jest pustym stringiem
-            try {
-                // Próbuj parsować bodyContent na JSON tylko wtedy, gdy nie jest pusty
-                bodyJSON = JSON.parse(bodyContent);
-            } catch (error) {
-                console.error("Invalid JSON format in body content:", error);
-                setResult("Invalid JSON format.");
-                setBackgroundColor("rgba(255, 0, 0, 0.4)");
-                return; // Zakończ funkcję, jeśli JSON jest niepoprawny
-            }
-        }
+        await apiSender(method, url, bodyContent, setResult, setBackgroundColor);
 
-        const statusCode = (result: string) => {
-            const match = result.match(/Status: (\d+)/);
-            const statusCode: string = match ? match[1] : '';
-            console.log(statusCode);
-
-            switch (statusCode) {
-                case "200":
-                    setBackgroundColor('rgba(0, 255, 0, 0.2)');
-                    setResult(result);
-                    break;
-                default:
-                    setBackgroundColor("rgba(255, 0, 0, 0.4)");
-                    setResult(result);
-                    break;
-            }
-        }
-
-        const apiBaseUrl = process.env.NODE_ENV === 'production'
-            ? 'https://endpoint-tester-web-tool-server.vercel.app'
-            : 'http://localhost:3000';
-
-        axios.post(`${apiBaseUrl}/api`, {
-            Method: method,
-            URL: url,
-            BodyContent: bodyJSON
-        })
-            .then(response => {
-                const result = handleResponseAxios(response, startTime, method, url);
-                statusCode(result)
-            })
-            .catch(error => {
-                const result = handleErrorAxios(error, startTime, method, url);
-                statusCode(result);
-            });
     };
 
     return (
