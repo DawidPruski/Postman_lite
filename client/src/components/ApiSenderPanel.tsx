@@ -88,15 +88,29 @@ export default function ApiSenderPanel() {
                     minLength={1000}
                 />
             </div >
-            <div className='HistoryLog'>
-                <ul id='logConsole'>
+            <div className='HistoryLog' style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '16px',
+                backgroundColor: '#353535',
+                borderRadius: '8px',
+                height: '100%',
+                boxSizing: 'border-box',
+            }}>
+                <ul id='logConsole' style={{
+                    margin: 0,
+                    padding: '16px',
+                    backgroundColor: backgroundColor,
+                    borderRadius: '8px',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: '100%',
+                    height: '100%',
+                    boxSizing: 'border-box',
+                }}>
                     <pre style={{
-                        backgroundColor: backgroundColor,
-                        borderRadius: 8,
-                        padding: 4,
-                        margin: 0,
-                        height: 'auto',
-                        width: 'auto'
+                        fontFamily: 'inherit'
                     }}>
                         {result}
                     </pre>

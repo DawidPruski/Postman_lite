@@ -87,7 +87,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.checkboxContainer {
+/* .checkboxContainer {
   padding: 10px;
 }
 
@@ -98,6 +98,12 @@ button:focus-visible {
   gap: 5px;
 }
 
+.checkboxJSON,
+.checkboxXML {
+  margin-right: 10px;
+  margin-left: 10px;
+} */
+
 .bodyContainer {
   display: flex;
   justify-content: center;
@@ -107,16 +113,4 @@ button:focus-visible {
 .bodyTextArea {
   width: 500px;
   height: 250px;
-}
-
-.checkboxJSON,
-.checkboxXML {
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.HistoryLog {
-  padding: 4px;
-  background-color: #353535;
-  border-radius: 8px;
 }
