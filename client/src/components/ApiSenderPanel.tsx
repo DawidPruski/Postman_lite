@@ -36,7 +36,7 @@ export default function ApiSenderPanel() {
                     fontSize: '70px',
                     fontFamily: 'Rubik Bubbles'
                 }}>
-                APITester
+                API Tester
             </h1>
             <div className='sendPanel'
                 style={{
