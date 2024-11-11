@@ -1,4 +1,4 @@
-# EndpointTester
+# APITester
 # The application is currently in development!
 
 ## Introduction
