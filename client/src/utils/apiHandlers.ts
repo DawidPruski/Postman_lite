@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 
 const apiBaseUrl = process.env.NODE_ENV === 'production'
-    ? 'https://endpoint-tester-web-tool-server.vercel.app'
+    ? 'https://api-tester-web-tool-server.vercel.app'
     : 'http://localhost:3000';
 
 export async function apiSender(method: string, url: string, bodyContent: string, setResult: (result: string) => void, setBackgroundColor: (color: string) => void) {

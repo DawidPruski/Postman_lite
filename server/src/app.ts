@@ -7,7 +7,7 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 
-const allowedOrigins = ['https://endpoint-tester-web-tool.vercel.app', 'http://localhost:5173'];
+const allowedOrigins = ['https://api-tester-web-tool.vercel.app', 'http://localhost:5173'];
 
 app.use(cors({
     origin: allowedOrigins,
