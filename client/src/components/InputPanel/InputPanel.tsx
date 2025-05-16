@@ -4,11 +4,11 @@ import MethodSelect from "./MethodSelect";
 import styles from "./InputPanel.module.css";
 
 interface InputPanelProps {
-  setResult: (result: string) => void;
+  setHistory: (result: any) => void;
   setBackgroundColor: (color: string) => void;
 }
 
-const InputPanel = ({ setResult, setBackgroundColor }: InputPanelProps) => {
+const InputPanel = ({ setHistory, setBackgroundColor }: InputPanelProps) => {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("https://httpbin.org/get");
   const [bodyContent, setBodyContent] = useState("");
@@ -19,7 +19,7 @@ const InputPanel = ({ setResult, setBackgroundColor }: InputPanelProps) => {
     bodyContent: string
   ) => {
     const result = await apiHandlers(method, url, bodyContent);
-    setResult(result);
+    setHistory(result);
   };
 
   const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -18,7 +18,7 @@ const Log = ({ title, status, details }) => {
           <span>{isOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}</span>
         </span>
       </button>
-      {isOpen && <div className={styles.collapsibleContent}>coś tu jest?</div>}
+      {isOpen && <div className={styles.collapsibleContent}>{details}</div>}
     </div>
   );
 };

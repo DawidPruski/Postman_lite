@@ -34,38 +34,25 @@ const apiHandlers = async (method: string, url: string, body?: any) => {
       .map(([key, value]) => `${key}: ${value}`)
       .join("\n");
 
-    let formattedData;
-    try {
-      formattedData = JSON.stringify(response.data, null, 2);
-    } catch {
-      formattedData = response.data.toString();
-    }
-
-    return `
-    Request: ${method} ${url}
-    Status: ${response.status} ${response.statusText}
-    Response Time: ${responseTime}ms
-    Response Size: ${responseSize}
-
-    Headers:
-    ${headers}
-
-    Body:
-    ${formattedData}`.trim();
+    console.log(response);
+    return {
+      time: responseTime,
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers,
+      responseSize: responseSize,
+      data: response.data,
+      config: response.config,
+    };
   } catch (error: any) {
-    const errorMessage = error.response
-      ? `Error: ${error.response.status} ${
-          error.response.statusText
-        }\n\n${JSON.stringify(error.response.data, null, 2)}`
-      : `Error: ${error.message}`;
-    return `
-    Request: ${method} ${url}
-    Status: Failed
-    Response Time: ${Date.now() - startTime}ms
-
-    Error:
-    ${errorMessage}
-    `.trim();
+    return {
+      error: error?.message || "Unknown error",
+      status: error?.response?.status,
+      statusText: error?.response?.statusText,
+      data: error?.response?.data
+        ? JSON.stringify(error.response.data, null, 2)
+        : "",
+    };
   }
 };
 
