@@ -1,0 +1,15 @@
+.logo {
+  text-align: center;
+  font-family: monospace;
+  min-height: auto;
+  font-size: 25px;
+  line-height: 1.1;
+  white-space: pre;
+  color: #d48a00ff;
+}
+
+@media (max-width: 1000px) {
+  .logo {
+    font-size: 14px;
+  }
+}

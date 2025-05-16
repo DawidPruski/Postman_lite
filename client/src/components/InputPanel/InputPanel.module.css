@@ -1,0 +1,50 @@
+.sendPanel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.sendButton {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.sendButton:hover {
+  border-color: #646cff;
+}
+
+.sendButton:focus,
+.sendButton:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.inputUrl {
+  /* Przerwa pomiędzy button a input */
+  margin-right: 10px;
+  /* Parametry wielkości */
+  height: 30px;
+  width: 300px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: border-color 0.25s;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.inputUrl:hover {
+  border-color: #646cff;
+}
+
+.inputUrl:focus,
+.inputUrl:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
