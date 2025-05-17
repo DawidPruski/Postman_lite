@@ -5,21 +5,23 @@ import styles from "./InputPanel.module.css";
 
 interface InputPanelProps {
   setHistory: (result: any) => void;
-  setBackgroundColor: (color: string) => void;
 }
 
-const InputPanel = ({ setHistory, setBackgroundColor }: InputPanelProps) => {
+const InputPanel = ({ setHistory }: InputPanelProps) => {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("https://httpbin.org/get");
   const [bodyContent, setBodyContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendClick = async (
     method: string,
     url: string,
     bodyContent: string
   ) => {
+    setIsLoading(true);
     const result = await apiHandlers(method, url, bodyContent);
     setHistory(result);
+    setIsLoading(false);
   };
 
   const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,27 +41,25 @@ const InputPanel = ({ setHistory, setBackgroundColor }: InputPanelProps) => {
         />
         <button
           className={styles.sendButton}
+          style={{
+            color: isLoading ? "grey" : "white",
+            cursor: isLoading ? "not-allowed" : "pointer",
+          }}
           type="submit"
+          disabled={isLoading}
           onClick={() => {
             handleSendClick(method, url, bodyContent);
           }}
         >
-          Send
+          {isLoading ? "Sending..." : "Send"}
         </button>
       </div>
-      <div
-        className="bodyContainer"
-        style={{
-          margin: 20,
-        }}
-      >
+      <div className={styles.bodyContainer}>
         <textarea
-          className="bodyTextArea"
+          className={styles.bodyTextArea}
           value={bodyContent}
           placeholder="Body goes here..."
           onChange={handleBodyChange}
-          maxLength={1000}
-          minLength={1000}
         />
       </div>
     </>

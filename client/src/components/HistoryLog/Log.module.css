@@ -5,20 +5,33 @@
 }
 
 .collapsibleButton {
-  background-color: #00000050;
+  background-color: rgb(44, 44, 44);
+  font-family: inherit;
+  color: white;
   padding: 10px;
   width: 100%;
+  border-radius: 8px;
   text-align: left;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.25s ease;
 }
 
 .collapsibleButton:hover {
-  background-color: #9494944d;
+  border-color: aqua;
+}
+
+.collapsibleButton:active {
+  border-color: transparent;
+}
+
+.collapsibleButton:focus,
+.collapsibleButton:focus-visible {
+  outline: none;
 }
 
 .status {
@@ -29,8 +42,17 @@
 }
 
 .collapsibleContent {
-  background-color: #9494944d;
+  background-color: rgba(128, 128, 128, 0.5);
+  font-family: inherit;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px transparent;
   border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.collapsibleContentBody {
+  margin-left: 50px;
+  white-space: pre-wrap;
+  background-color: rgba(255, 255, 255, 0.048);
+  border-color: black;
 }
