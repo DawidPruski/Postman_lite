@@ -1,16 +1,18 @@
 package com.dawidpruski.postman.dto;
 
-public class RequestDTO {
-    String time;
-    String url;
-    String method;
-    String response;
+import java.util.Optional;
 
-    public RequestDTO(String time, String url, String method, String response) {
+public class RequestDTO {
+    private String time;
+    private String url;
+    private String method;
+    private Optional<String> body;
+
+    public RequestDTO(String time, String url, String method, Optional<String> body) {
         this.time = time;
         this.url = url;
         this.method = method;
-        this.response = response;
+        this.body = body;
     }
 
     public String getTime() {
@@ -37,11 +39,11 @@ public class RequestDTO {
         this.method = method;
     }
 
-    public String getResponse() {
-        return response;
+    public Optional<String> getBody() {
+        return body;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setBody(Optional<String> body) {
+        this.body = body;
     }
 }
