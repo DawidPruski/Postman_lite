@@ -13,6 +13,11 @@ public class RequestResponseHistory {
     RequestDTO request;
     ResponseDTO response;
 
+    public RequestResponseHistory(RequestDTO request, ResponseDTO response) {
+        this.request = request;
+        this.response = response;
+    }
+
     public String getId() {
         return id;
     }
