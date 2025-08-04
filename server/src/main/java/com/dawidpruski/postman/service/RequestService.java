@@ -1,52 +1,70 @@
 package com.dawidpruski.postman.service;
 
+import java.util.Map;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import com.dawidpruski.postman.dto.RequestDTO;
 import com.dawidpruski.postman.dto.ResponseDTO;
+import com.dawidpruski.postman.model.RequestResponseHistory;
 
 @Service
 public class RequestService {
 
     private final RestClient restClient;
+    private final MongoDBService mongoDBService;
 
-    public RequestService() {
+    public RequestService(MongoDBService mongoDBService) {
         this.restClient = RestClient.create();
+        this.mongoDBService = mongoDBService;
     }
 
     public ResponseDTO executeRequest(RequestDTO request) {
         long startTime = System.currentTimeMillis();
-        ResponseEntity<String> response;
+        ResponseEntity<Map<String, Object>> response;
         switch (request.getMethod().toUpperCase()) {
             case "GET":
-                response = restClient.get().uri(request.getUrl()).retrieve().toEntity(String.class);
+                response = restClient.get().uri(request.getUrl()).retrieve()
+                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
+                        });
                 break;
             case "POST":
-                response = restClient.post().body(request.getBody()).retrieve().toEntity(String.class);
+                response = restClient.post().uri(request.getUrl()).body(request.getBody()).retrieve()
+                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
+                        });
                 break;
             case "DELETE":
-                response = restClient.delete().uri(request.getUrl()).retrieve().toEntity(String.class);
+                response = restClient.delete().uri(request.getUrl()).retrieve()
+                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
+                        });
                 break;
             case "PUT":
-                response = restClient.put().uri(request.getUrl()).retrieve().toEntity(String.class);
+                response = restClient.put().uri(request.getUrl()).body(request.getBody()).retrieve()
+                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
+                        });
                 break;
             case "PATCH":
-                response = restClient.patch().uri(request.getUrl()).retrieve().toEntity(String.class);
+                response = restClient.patch().uri(request.getUrl()).body(request.getBody()).retrieve()
+                        .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
+                        });
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported HTTP method: " + request.getMethod());
         }
         long responseTime = System.currentTimeMillis() - startTime;
 
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setTime(responseTime + "ms");
-        responseDTO.setUrl(request.getUrl());
-        responseDTO.setMethod(request.getMethod());
-        responseDTO.setResponseBody(response.getBody());
-        responseDTO.setStatusCode(response.getStatusCode().value());
-        responseDTO.setStatusText(response.getStatusCode().toString());
+        RequestDTO requestDTO = new RequestDTO(request.getUrl(), request.getMethod(), request.getHeaders(),
+                request.getBody());
+
+        ResponseDTO responseDTO = new ResponseDTO(request.getUrl(), request.getMethod(), request.getHeaders(),
+                response.getBody(), response.getStatusCode().value(),
+                response.getStatusCode().toString(), responseTime);
+
+        RequestResponseHistory requestResponseHistory = new RequestResponseHistory(requestDTO, responseDTO);
+        mongoDBService.createRequestHistory(requestResponseHistory);
 
         return responseDTO;
     }

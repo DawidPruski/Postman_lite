@@ -1,27 +1,23 @@
 package com.dawidpruski.postman.dto;
 
-import java.util.Optional;
+import java.util.Map;
 
 public class RequestDTO {
-    private String time;
     private String url;
     private String method;
-    private Optional<String> body;
 
-    public RequestDTO(String time, String url, String method, Optional<String> body) {
-        this.time = time;
+    private Map<String, String> headers;
+    private Map<String, Object> body;
+    private Boolean isError;
+
+    public RequestDTO(String url, String method, Map<String, String> headers, Map<String, Object> body) {
         this.url = url;
         this.method = method;
+        this.headers = headers;
         this.body = body;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
+    private String errorMessage;
 
     public String getUrl() {
         return url;
@@ -39,11 +35,35 @@ public class RequestDTO {
         this.method = method;
     }
 
-    public Optional<String> getBody() {
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public Map<String, Object> getBody() {
         return body;
     }
 
-    public void setBody(Optional<String> body) {
+    public void setBody(Map<String, Object> body) {
         this.body = body;
+    }
+
+    public Boolean getIsError() {
+        return isError;
+    }
+
+    public void setIsError(Boolean isError) {
+        this.isError = isError;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

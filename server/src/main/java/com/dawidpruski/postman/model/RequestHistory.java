@@ -1,28 +1,31 @@
-package com.dawidpruski.postman.dto;
+package com.dawidpruski.postman.model;
 
 import java.util.Map;
+import java.util.Optional;
 
-public class ResponseDTO {
+import org.springframework.data.annotation.Id;
+
+public class RequestHistory {
+
+    @Id
+    private String id;
     private String url;
     private String method;
 
     private Map<String, String> headers;
-    private Map<String, Object> body;
+    private Optional<String> body;
     private Integer statusCode;
     private String statusText;
     private Long time;
     private Boolean isError;
     private String errorMessage;
 
-    public ResponseDTO(String url, String method, Map<String, String> headers, Map<String, Object> body,
-            Integer statusCode, String statusText, Long time) {
-        this.url = url;
-        this.method = method;
-        this.headers = headers;
-        this.body = body;
-        this.statusCode = statusCode;
-        this.statusText = statusText;
-        this.time = time;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUrl() {
@@ -49,11 +52,11 @@ public class ResponseDTO {
         this.headers = headers;
     }
 
-    public Map<String, Object> getBody() {
+    public Optional<String> getBody() {
         return body;
     }
 
-    public void setBody(Map<String, Object> body) {
+    public void setBody(Optional<String> body) {
         this.body = body;
     }
 
