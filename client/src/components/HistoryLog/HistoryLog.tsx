@@ -4,7 +4,9 @@ interface HistoryLogItem {
   time: string;
   url: string;
   method: string;
-  response?: any;
+  requestHeaders: any;
+  requestBody: any;
+  responseBody?: any;
   error?: any;
 }
 
@@ -18,37 +20,24 @@ const HistoryLog = ({ history }: HistoryLogProps) => {
       return (
         <Log
           key={index}
-          status={`${i.error?.status ? i.error.status : i.error.code} | ${(
-            Number(i.time) / 1000
-          ).toFixed(2)}s`}
+          status={`${i.error?.status ? i.error.status : i.error.code} | ${(Number(i.time) / 1000).toFixed(2)}s`}
           urlAndMethod={`${i.method?.toUpperCase()} ${i.url}`}
           requestHeaders={i.error?.config?.headers}
-          requestBody={
-            i.error?.config?.data ? i.error.config.data : "No body included"
-          }
+          requestBody={i.error?.config?.data ? i.error.config.data : "No body included"}
           responseHeaders={i.error?.response?.headers ?? ""}
-          responseBody={
-            i.error?.response?.data ? i.error.response.data : "No response body"
-          }
+          responseBody={i.error?.response?.data ? i.error.response.data : "No response body"}
         />
       );
     }
-
     return (
       <Log
         key={index}
-        status={`${i.response?.status || "Unknown"} | ${(
-          Number(i.time) / 1000
-        ).toFixed(2)}s`}
+        status={`${i.responseBody?.statusCodeValue || "Unknown"} | ${(Number(i.time) / 1000).toFixed(2)}s`}
         urlAndMethod={`${i.method?.toUpperCase()} ${i.url}`}
-        requestHeaders={i.response?.config?.headers}
-        requestBody={i.response?.config?.data}
-        responseHeaders={i.response?.headers}
-        responseBody={
-          i.response?.data
-            ? JSON.stringify(i.response.data, null, 2)
-            : "No response body"
-        }
+        requestHeaders={i.requestHeaders?.["Content-Type"]}
+        requestBody={i.requestBody?.body}
+        responseHeaders={i.responseBody?.body?.headers ? JSON.stringify(i.responseBody.body.headers, null, 2) : "No response headers"}
+        responseBody={i.responseBody?.body ? JSON.stringify(i.responseBody.body, null, 2) : "No response body"}
       />
     );
   });

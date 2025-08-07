@@ -45,6 +45,6 @@ public class PostmanController {
     @PostMapping(value = "/send")
     public ResponseEntity<Object> sendApiRequest(@RequestBody RequestDTO request) {
         var response = postmanService.sendRequestAndSaveHistory(request);
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }
