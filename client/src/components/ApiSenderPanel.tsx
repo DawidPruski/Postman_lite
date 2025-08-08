@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./ApiSenderPanel.module.css";
-import HistoryLog from "./HistoryLog/index";
-import InputPanel from "./InputPanel/index";
+import HistoryLog from "./HistoryLog/HistoryLog";
+import InputPanel from "./InputPanel/InputPanel";
 
 export default function ApiSenderPanel() {
   const [history, setHistory] = useState<any[]>([]);

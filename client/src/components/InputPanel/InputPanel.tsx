@@ -1,7 +1,9 @@
 import { useState } from "react";
 import apiHandlers from "../../services/apiHandlers";
 import MethodSelect from "./MethodSelect";
-import styles from "./InputPanel.module.css";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { TextArea } from "./ui/textarea";
 
 interface InputPanelProps {
   setHistory: (result: any) => void;
@@ -13,11 +15,7 @@ const InputPanel = ({ setHistory }: InputPanelProps) => {
   const [bodyContent, setBodyContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendClick = async (
-    method: string,
-    url: string,
-    bodyContent: string
-  ) => {
+  const handleSendClick = async (method: string, url: string, bodyContent: string) => {
     setIsLoading(true);
     const result = await apiHandlers(method, url, bodyContent);
     setHistory(result);
@@ -31,16 +29,10 @@ const InputPanel = ({ setHistory }: InputPanelProps) => {
 
   return (
     <>
-      <div className={styles.sendPanel}>
+      <div className="flex items-center justify-center m-5">
         <MethodSelect setMethod={setMethod} />
-        <input
-          className={styles.inputUrl}
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <button
-          className={styles.sendButton}
+        <Input value={url} onChange={(e) => setUrl(e.target.value)} />
+        <Button
           style={{
             color: isLoading ? "grey" : "white",
             cursor: isLoading ? "not-allowed" : "pointer",
@@ -52,15 +44,10 @@ const InputPanel = ({ setHistory }: InputPanelProps) => {
           }}
         >
           {isLoading ? "Sending..." : "Send"}
-        </button>
+        </Button>
       </div>
-      <div className={styles.bodyContainer}>
-        <textarea
-          className={styles.bodyTextArea}
-          value={bodyContent}
-          placeholder="Body goes here..."
-          onChange={handleBodyChange}
-        />
+      <div className="flex justify-center p-2.5">
+        <TextArea value={bodyContent} onChange={handleBodyChange} />
       </div>
     </>
   );
