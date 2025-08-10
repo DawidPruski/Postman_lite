@@ -49,7 +49,7 @@ const Log = ({ status, urlAndMethod, requestHeaders, requestBody, responseHeader
           <div>{`Response Headers: ${responseHeaders}`}</div>
           <div>
             Response Body:
-            <pre className="whitespace-pre-wrap bg-[rgba(255,255,255,0.048)] ml-12.5 border-[black]">
+            <pre className="whitespace-pre-wrap bg-[rgba(255,255,255,0.048)] ml-12.5 border-[black] text-xs">
               {responseBody}
             </pre>
           </div>

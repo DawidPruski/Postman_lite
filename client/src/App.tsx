@@ -1,14 +1,13 @@
-import './App.css';
-import ApiSenderPanel from './components/ApiSenderPanel';
+import "./App.css";
+import ApiSenderPanel from "./components/ApiSender/ApiSenderPanel";
 // import Body from './components/Body';
 
 function App() {
-
-    return (
-        <>
-            <ApiSenderPanel />
-        </>
-    );
+  return (
+    <>
+      <ApiSenderPanel />
+    </>
+  );
 }
 
 export default App;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Select } from "./ui/select";
+import { Select } from "../../ui/select";
 
 interface MethodSelectProps {
   setMethod: (method: string) => void;

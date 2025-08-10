@@ -1,15 +1,15 @@
 import { useState } from "react";
-import apiHandlers from "../../services/apiHandlers";
+import apiHandlers from "../../../services/apiHandlers";
 import MethodSelect from "./MethodSelect";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { TextArea } from "./ui/textarea";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
+import { TextArea } from "../../ui/textarea";
 
-interface InputPanelProps {
+interface RequestUrlFieldProps {
   setHistory: (result: any) => void;
 }
 
-const InputPanel = ({ setHistory }: InputPanelProps) => {
+const RequestUrlField = ({ setHistory }: RequestUrlFieldProps) => {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("https://httpbin.org/get");
   const [bodyContent, setBodyContent] = useState("");
@@ -53,4 +53,4 @@ const InputPanel = ({ setHistory }: InputPanelProps) => {
   );
 };
 
-export default InputPanel;
+export default RequestUrlField;
