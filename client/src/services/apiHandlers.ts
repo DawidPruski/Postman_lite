@@ -13,7 +13,7 @@ const apiHandlers = async (method: string, url: string, body?: any) => {
   const requestHeaders = { "Content-Type": "application/json" };
   const requestBody = JSON.stringify(serverBody);
   try {
-    response = await fetch(serverUrl + "/api/send", {
+    response = await fetch(serverUrl + "/api/requests/send", {
       method: "POST",
       headers: requestHeaders,
       body: requestBody,

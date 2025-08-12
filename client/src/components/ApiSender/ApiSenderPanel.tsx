@@ -31,8 +31,12 @@ export default function ApiSenderPanel() {
             `}
         </pre>
       </div>
-      <RequestUrlField setHistory={handleAddResult} />
-      <HistoryLog history={history} />
+      {user && (
+        <>
+          <RequestUrlField setHistory={handleAddResult} />
+          <HistoryLog history={history} />
+        </>
+      )}
     </>
   );
 }
