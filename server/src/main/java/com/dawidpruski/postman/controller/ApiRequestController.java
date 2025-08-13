@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawidpruski.postman.dto.api.RequestDto;
+import com.dawidpruski.postman.dto.api.ApiRequestDto;
 import com.dawidpruski.postman.model.RequestResponseHistory;
 import com.dawidpruski.postman.repository.RequestResponseRepository;
 import com.dawidpruski.postman.service.MongoDBService;
@@ -49,7 +49,7 @@ public class ApiRequestController {
     }
 
     @PostMapping(value = "/send")
-    public ResponseEntity<Object> sendApiRequest(@RequestBody RequestDto request) {
+    public ResponseEntity<Object> sendApiRequest(@RequestBody ApiRequestDto request) {
         var response = apiRequestService.sendRequestAndSaveHistory(request);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }

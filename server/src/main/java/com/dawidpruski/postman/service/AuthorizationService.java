@@ -1,64 +1,93 @@
 package com.dawidpruski.postman.service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
+import java.util.Date;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.SecretKey;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dawidpruski.postman.dto.ResponseDto;
+import com.dawidpruski.postman.dto.auth.LoginResponseDto;
 import com.dawidpruski.postman.model.User;
 import com.dawidpruski.postman.repository.UserRepository;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
 @Service
 public class AuthorizationService {
+    private final String secretKey;
+    private final long expirationMs = 3600000;
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthorizationService(UserRepository userRepository) {
+    public AuthorizationService(@Value("${jwt.secret}") String secretKey, UserRepository userRepository,
+            PasswordEncoder passwordEncoder) {
+        this.secretKey = secretKey;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<Object> authorizeRegister(String userName, String password) {
+    public ResponseDto authorizeRegister(String userName, String password) {
         String encryptedPassword = hashPassword(password);
         var result = userRepository.findByUserName(userName).orElse(null);
         if (result == null) {
             User user = new User(userName, encryptedPassword);
             userRepository.save(user);
-            return ResponseEntity.status(201).body("User registered");
+            return new ResponseDto(201, "User registered!");
         } else {
-            return ResponseEntity.status(409).body("User is already registered");
+            return new ResponseDto(409, "User is already registered");
         }
     }
 
-    public String authorizeLogin(String userName, String password) {
-        // TODO
-        return "Login Successful";
+    public LoginResponseDto authorizeLogin(String userName, String password) {
+        var result = userRepository.findByUserName(userName).orElse(null);
+        if (result != null && passwordEncoder.matches(password, result.getPassword())) {
+            String token = generateToken(userName);
+            return new LoginResponseDto(200, "Login successful", token);
+        } else {
+            return new LoginResponseDto(401, "Incorrect credentials or user doesn't exists!", null);
+        }
     }
 
     private String hashPassword(String password) {
-        try {
-            SecureRandom random = new SecureRandom();
-            byte[] salt = new byte[16];
-            random.nextBytes(salt);
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = factory.generateSecret(spec).getEncoded();
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
+        return passwordEncoder.encode(password);
     }
 
-    private String getToken() {
-        // TODO
-        return "token";
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
+    public String generateToken(String username) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + expirationMs);
+
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    public String getUsernameFromToken(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

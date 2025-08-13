@@ -3,8 +3,8 @@ package com.dawidpruski.postman.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.dawidpruski.postman.dto.api.RequestDto;
-import com.dawidpruski.postman.dto.api.ResponseDto;
+import com.dawidpruski.postman.dto.api.ApiRequestDto;
+import com.dawidpruski.postman.dto.api.ApiResponseDto;
 
 @Document(collection = "request_response_history")
 public class RequestResponseHistory {
@@ -15,15 +15,15 @@ public class RequestResponseHistory {
     @Id
     private Long id;
 
-    RequestDto requestDto;
-    ResponseDto responseDto;
+    ApiRequestDto apiRequestDto;
+    ApiResponseDto apiResponseDto;
 
     public RequestResponseHistory() {
     }
 
-    public RequestResponseHistory(RequestDto requestDto, ResponseDto responseDto) {
-        this.requestDto = requestDto;
-        this.responseDto = responseDto;
+    public RequestResponseHistory(ApiRequestDto apiRequestDto, ApiResponseDto apiResponseDto) {
+        this.apiRequestDto = apiRequestDto;
+        this.apiResponseDto = apiResponseDto;
     }
 
     public Long getId() {
@@ -34,20 +34,20 @@ public class RequestResponseHistory {
         this.id = id;
     }
 
-    public RequestDto getRequest() {
-        return requestDto;
+    public ApiRequestDto getRequest() {
+        return apiRequestDto;
     }
 
-    public void setRequest(RequestDto requestDto) {
-        this.requestDto = requestDto;
+    public void setRequest(ApiRequestDto apiRequestDto) {
+        this.apiRequestDto = apiRequestDto;
     }
 
-    public ResponseDto getResponse() {
-        return responseDto;
+    public ApiResponseDto getResponse() {
+        return apiResponseDto;
     }
 
-    public void setResponse(ResponseDto responseDto) {
-        this.responseDto = responseDto;
+    public void setResponse(ApiResponseDto apiResponseDto) {
+        this.apiResponseDto = apiResponseDto;
     }
 
 }

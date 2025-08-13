@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-// import { loginService } from "../../../services/login";
+import { loginService } from "../../../services/login";
 
 interface LoginFormProps {
   onLogin: (user: boolean) => void;
@@ -11,11 +11,10 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const user = await loginService({ username, password });
-    onLogin(true);
+    const user = await loginService({ username, password });
+    onLogin(user);
     setUsername("");
     setPassword("");
-    console.log(`logged as ${username} and password ${password}`);
   };
   return (
     <>
