@@ -5,11 +5,11 @@ import RequestUrlField from "./RequestUrlField/RequestUrlField";
 import LoginForm from "./LoginForm/LoginForm";
 
 export default function ApiSenderPanel() {
-  const [user, setUser] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const [history, setHistory] = useState<any[]>([]);
 
-  const handleLogin = () => {
-    setUser(true);
+  const handleLogin = (newToken: string) => {
+    setToken(newToken);
   };
 
   const handleAddResult = (resultObj: any) => {
@@ -18,7 +18,6 @@ export default function ApiSenderPanel() {
 
   return (
     <>
-      {!user && <LoginForm onLogin={handleLogin} />}
       <div className={styles.logo}>
         <pre>
           {`
@@ -31,9 +30,10 @@ export default function ApiSenderPanel() {
             `}
         </pre>
       </div>
-      {user && (
+      {!token && <LoginForm onLogin={handleLogin} />}
+      {token && (
         <>
-          <RequestUrlField setHistory={handleAddResult} />
+          <RequestUrlField setHistory={handleAddResult} token={token} />
           <HistoryLog history={history} />
         </>
       )}

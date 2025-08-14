@@ -29,7 +29,7 @@ public class ApiRequestService {
                 this.mongoOperations = mongoOperations;
         }
 
-        public ResponseEntity<Object> sendRequestAndSaveHistory(ApiRequestDto request) {
+        public ResponseEntity<Object> sendRequestAndSaveHistory(ApiRequestDto request, String authorization) {
                 long startTime = System.currentTimeMillis();
                 var response = restClientService.executeRequest(request.method().toUpperCase(), request.url(),
                                 request.body());

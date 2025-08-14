@@ -1,6 +1,10 @@
 import { SERVER_URL } from "../config/config";
 
-const apiHandlers = async (method: string, url: string, body?: any) => {
+const apiHandlers = async (method: string, url: string, token: string, body?: any) => {
+  let response;
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", token);
   const startTime = Date.now();
 
   const serverUrl: string = SERVER_URL;
@@ -9,13 +13,12 @@ const apiHandlers = async (method: string, url: string, body?: any) => {
     method: method,
     body: body,
   };
-  let response;
-  const requestHeaders = { "Content-Type": "application/json" };
   const requestBody = JSON.stringify(serverBody);
+
   try {
     response = await fetch(serverUrl + "/api/requests/send", {
       method: "POST",
-      headers: requestHeaders,
+      headers: myHeaders,
       body: requestBody,
     });
 
@@ -26,7 +29,7 @@ const apiHandlers = async (method: string, url: string, body?: any) => {
       time: responseTime,
       url: url,
       method: method,
-      requestHeaders: requestHeaders,
+      requestHeaders: myHeaders,
       requestBody: JSON.parse(requestBody),
       responseBody: responseBody,
     };
@@ -36,7 +39,7 @@ const apiHandlers = async (method: string, url: string, body?: any) => {
       time: responseTime,
       url: url,
       method: method,
-      requestHeaders: requestHeaders,
+      requestHeaders: myHeaders,
       requestBody: requestBody,
       response: response,
       error: error,

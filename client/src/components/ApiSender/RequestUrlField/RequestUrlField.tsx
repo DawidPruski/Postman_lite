@@ -7,9 +7,10 @@ import { TextArea } from "../../ui/textarea";
 
 interface RequestUrlFieldProps {
   setHistory: (result: any) => void;
+  token: string;
 }
 
-const RequestUrlField = ({ setHistory }: RequestUrlFieldProps) => {
+const RequestUrlField = ({ setHistory, token }: RequestUrlFieldProps) => {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("https://httpbin.org/get");
   const [bodyContent, setBodyContent] = useState("");
@@ -17,7 +18,7 @@ const RequestUrlField = ({ setHistory }: RequestUrlFieldProps) => {
 
   const handleSendClick = async (method: string, url: string, bodyContent: string) => {
     setIsLoading(true);
-    const result = await apiHandlers(method, url, bodyContent);
+    const result = await apiHandlers(method, url, token, bodyContent);
     setHistory(result);
     setIsLoading(false);
   };
