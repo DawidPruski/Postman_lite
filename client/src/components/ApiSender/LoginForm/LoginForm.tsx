@@ -11,10 +11,16 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await loginService({ username, password });
-    onLogin(response.token);
-    setUsername("");
-    setPassword("");
+    try {
+      const response = await loginService({ username, password });
+      onLogin(response.token);
+      setUsername("");
+      setPassword("");
+    } catch (error) {
+      console.log(error);
+      setUsername("");
+      setPassword("");
+    }
   };
   return (
     <>

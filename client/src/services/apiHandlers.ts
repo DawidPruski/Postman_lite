@@ -4,7 +4,9 @@ const apiHandlers = async (method: string, url: string, token: string, body?: an
   let response;
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", token);
+  if (token) {
+    myHeaders.append("Authorization", token);
+  }
   const startTime = Date.now();
 
   const serverUrl: string = SERVER_URL;
