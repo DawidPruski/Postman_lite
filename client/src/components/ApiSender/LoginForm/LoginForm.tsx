@@ -13,6 +13,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     event.preventDefault();
     try {
       const response = await loginService({ username, password });
+      window.localStorage.setItem("loggedPostmanUser", JSON.stringify(response));
       onLogin(response.token);
       setUsername("");
       setPassword("");

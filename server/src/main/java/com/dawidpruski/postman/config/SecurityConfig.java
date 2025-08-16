@@ -27,8 +27,11 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.cors(Customizer.withDefaults()).csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/requests/**").authenticated().anyRequest().authenticated())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/index.html", "/assets/**", "/postmanlite.svg", "/favicon.ico").permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/requests/**").authenticated()
+            .anyRequest().authenticated())
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
