@@ -3,7 +3,6 @@ WORKDIR /app/client
 COPY client/package.json client/package-lock.json* ./
 RUN npm install
 COPY client/ .
-ENV VITE_SERVER_URL=http://localhost:8080
 RUN npm run build
 
 FROM maven:3.9.4-eclipse-temurin-21 AS server-build
