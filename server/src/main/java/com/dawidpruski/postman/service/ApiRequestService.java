@@ -14,18 +14,19 @@ import com.dawidpruski.postman.dto.api.ApiRequestDto;
 import com.dawidpruski.postman.dto.api.ApiResponseDto;
 import com.dawidpruski.postman.model.DatabaseSequence;
 import com.dawidpruski.postman.model.RequestResponseHistory;
+import com.dawidpruski.postman.repository.RequestResponseRepository;
 
 @Service
 public class ApiRequestService {
 
         private final RestClientService restClientService;
-        private final MongoDBService mongoDBService;
+        private final RequestResponseRepository requestResponseRepository;
         private final MongoOperations mongoOperations;
 
-        public ApiRequestService(RestClientService restClientService, MongoDBService mongoDBService,
-                        MongoOperations mongoOperations) {
+        public ApiRequestService(RestClientService restClientService,
+                        RequestResponseRepository requestResponseRepository, MongoOperations mongoOperations) {
                 this.restClientService = restClientService;
-                this.mongoDBService = mongoDBService;
+                this.requestResponseRepository = requestResponseRepository;
                 this.mongoOperations = mongoOperations;
         }
 
@@ -47,7 +48,7 @@ public class ApiRequestService {
                 requestResponseHistory.setId(generateSequence(RequestResponseHistory.SEQUENCE_NAME));
                 requestResponseHistory.setRequest(apiRequestDto);
                 requestResponseHistory.setResponse(apiResponseDto);
-                mongoDBService.createRequestHistory(requestResponseHistory);
+                requestResponseRepository.save(requestResponseHistory);
                 return response;
         }
 

@@ -10,27 +10,27 @@ import com.dawidpruski.postman.dto.ResponseDto;
 import com.dawidpruski.postman.dto.auth.LoginDto;
 import com.dawidpruski.postman.dto.auth.LoginResponseDto;
 import com.dawidpruski.postman.dto.auth.RegisterDto;
-import com.dawidpruski.postman.service.AuthorizationService;
+import com.dawidpruski.postman.service.AuthService;
 
 @RestController
 @RequestMapping(value = "api/auth")
-public class AuthorizationController {
+public class AuthController {
 
-    private final AuthorizationService authorizationService;
+    private final AuthService authService;
 
-    public AuthorizationController(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDto> register(@RequestBody RegisterDto registerDto) {
-        var response = authorizationService.authorizeRegister(registerDto.userName(), registerDto.password());
+        var response = authService.authorizeRegister(registerDto.userName(), registerDto.password());
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @PostMapping(value = "/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
-        var response = authorizationService.authorizeLogin(loginDto.username(), loginDto.password());
+        var response = authService.authorizeLogin(loginDto.username(), loginDto.password());
         return ResponseEntity.status(response.status()).body(response);
     }
 }

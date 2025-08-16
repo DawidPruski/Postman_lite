@@ -1,6 +1,6 @@
 import { SERVER_URL } from "../config/config";
 
-const apiHandlers = async (method: string, url: string, token: string, body?: any) => {
+const apiService = async (method: string, url: string, token: string, body?: any) => {
   let response;
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -49,4 +49,4 @@ const apiHandlers = async (method: string, url: string, token: string, body?: an
   }
 };
 
-export default apiHandlers;
+export default apiService;

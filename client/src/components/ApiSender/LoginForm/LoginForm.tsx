@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { loginService } from "../../../services/login";
+import { loginService } from "../../../services/loginService";
 
 interface LoginFormProps {
   onLogin: (user: string) => void;

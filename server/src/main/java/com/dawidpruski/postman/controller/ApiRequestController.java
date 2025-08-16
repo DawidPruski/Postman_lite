@@ -14,27 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dawidpruski.postman.dto.api.ApiRequestDto;
 import com.dawidpruski.postman.model.RequestResponseHistory;
 import com.dawidpruski.postman.repository.RequestResponseRepository;
-import com.dawidpruski.postman.service.MongoDBService;
 import com.dawidpruski.postman.service.ApiRequestService;
 
 @RestController
 @RequestMapping(value = "/api/requests")
 public class ApiRequestController {
 
-    private final MongoDBService mongoDBService;
     private final ApiRequestService apiRequestService;
     private final RequestResponseRepository requestResponseRepository;
 
-    public ApiRequestController(MongoDBService mongoDBService, ApiRequestService apiRequestService,
+    public ApiRequestController(ApiRequestService apiRequestService,
             RequestResponseRepository requestResponseRepository) {
-        this.mongoDBService = mongoDBService;
         this.apiRequestService = apiRequestService;
         this.requestResponseRepository = requestResponseRepository;
     }
 
     @GetMapping(value = "/history")
     public ResponseEntity<List<RequestResponseHistory>> getHistory() {
-        List<RequestResponseHistory> response = mongoDBService.returnRequestResponseHistory();
+        List<RequestResponseHistory> response = requestResponseRepository.findAll();
         return ResponseEntity.ok(response);
     }
 

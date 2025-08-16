@@ -1,5 +1,5 @@
 import { useState } from "react";
-import apiHandlers from "../../../services/apiHandlers";
+import apiService from "../../../services/apiService";
 import MethodSelect from "./MethodSelect";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -18,7 +18,7 @@ const RequestUrlField = ({ setHistory, token }: RequestUrlFieldProps) => {
 
   const handleSendClick = async (method: string, url: string, bodyContent: string) => {
     setIsLoading(true);
-    const result = await apiHandlers(method, url, token, bodyContent);
+    const result = await apiService(method, url, token, bodyContent);
     setHistory(result);
     setIsLoading(false);
   };

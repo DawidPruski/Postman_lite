@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../src/config/config";
+import { SERVER_URL } from "../config/config";
 
 export const loginService = async (credentials: { username: string; password: string }) => {
   const response = await fetch(SERVER_URL + "/api/auth/login", {

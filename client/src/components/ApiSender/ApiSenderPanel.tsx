@@ -1,6 +1,5 @@
-import { useState } from "react";
-import styles from "./ApiSenderPanel.module.css";
-import HistoryLog from "./HistoryPanel/History";
+import { useEffect, useState } from "react";
+import HistoryLog from "./HistoryAndLogs/History";
 import RequestUrlField from "./RequestUrlField/RequestUrlField";
 import LoginForm from "./LoginForm/LoginForm";
 
@@ -16,9 +15,17 @@ export default function ApiSenderPanel() {
     setHistory((prev) => [...prev, resultObj]);
   };
 
+  useEffect(() => {
+    const loggedPostmanUser = window.localStorage.getItem("loggedPostmanUser");
+    if (loggedPostmanUser) {
+      const user = JSON.parse(loggedPostmanUser);
+      setToken(user.token);
+    }
+  }, []);
+
   return (
     <>
-      <div className={styles.logo}>
+      <div className="logo">
         <pre>
           {`
     ________             _____                               ________________

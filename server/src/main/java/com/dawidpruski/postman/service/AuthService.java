@@ -9,13 +9,13 @@ import com.dawidpruski.postman.model.User;
 import com.dawidpruski.postman.repository.UserRepository;
 
 @Service
-public class AuthorizationService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public AuthorizationService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
