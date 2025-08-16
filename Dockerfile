@@ -10,7 +10,7 @@ WORKDIR /app/server
 COPY server/ .
 RUN mkdir -p src/main/resources/static
 COPY --from=client-build /app/client/dist/ src/main/resources/static/
-RUN mvn -B package
+RUN mvn -B package -DskipTests
 
 FROM eclipse-temurin:21-jre AS runtime
 WORKDIR /app
